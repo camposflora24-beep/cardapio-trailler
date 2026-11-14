@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trailer das Meninas | Cardápio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fundo:#0b0608; --painel:#1a0e14; --borda:#4a1f35;
+  --rosa:#ff2e93; --rosa-claro:#ffb3d9; --texto:#fbeef4; --fraco:#c49bb0; --ok:#5cffb0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fundo);color:var(--texto);font-family:'Nunito',system-ui,sans-serif;font-size:16px;line-height:1.4;padding-bottom:90px}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--rosa-claro);outline-offset:2px}
+
+.hero{text-align:center;padding:36px 18px 22px;background:radial-gradient(ellipse at top,#4a0f2c 0,transparent 70%)}
+.hero h1{font-family:'Pacifico',cursive;font-weight:400;font-size:clamp(2.6rem,11vw,4.4rem);margin:0;line-height:1.05;color:#fff;text-shadow:0 0 22px var(--rosa),3px 3px 0 #a3125f}
+.hero p{margin:10px 0 0;color:var(--rosa-claro);font-weight:600}
+.hero .previa{display:inline-block;margin-top:14px;padding:4px 12px;border:2px dashed var(--rosa);border-radius:99px;font-size:.85rem;color:var(--fraco)}
+
+.barra{position:sticky;top:0;z-index:5;background:#0b0608ee;backdrop-filter:blur(6px);padding:10px 14px 8px;border-bottom:2px solid var(--borda)}
+#busca{width:100%;padding:11px 14px;border-radius:12px;border:2px solid var(--borda);background:var(--painel)}
+#busca::placeholder{color:var(--fraco)}
+#abas{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+#abas button{flex:none;padding:7px 14px;border-radius:99px;border:2px solid var(--borda);background:var(--painel);cursor:pointer;font-weight:600;white-space:nowrap}
+#abas button:hover{border-color:var(--rosa)}
+
+main{max-width:760px;margin:0 auto;padding:6px 14px}
+section{padding-top:22px;scroll-margin-top:110px}
+section h2{font-family:'Pacifico',cursive;font-weight:400;font-size:1.8rem;margin:0 0 4px;color:var(--rosa)}
+section .sub{margin:0 0 10px;color:var(--fraco);font-size:.9rem}
+.item{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--borda)}
+.item b{font-weight:800}
+.item small{display:block;color:var(--fraco);font-size:.85rem;margin-top:2px}
+.preco{font-weight:800;color:var(--rosa-claro);white-space:nowrap}
+.preco.consulte{color:var(--fraco);font-weight:600;font-size:.9rem}
+.acao{grid-column:2;display:flex;justify-content:flex-end}
+.add{padding:7px 16px;border-radius:10px;border:0;background:var(--rosa);color:#fff;font-weight:800;cursor:pointer}
+.add:hover{background:#ff5aa9}
+.qtd{display:flex;align-items:center;gap:10px;background:var(--painel);border:2px solid var(--rosa);border-radius:10px}
+.qtd button{width:34px;height:32px;border:0;background:none;font-size:1.2rem;font-weight:800;cursor:pointer;color:var(--rosa-claro)}
+.vazio{text-align:center;color:var(--fraco);padding:40px 0}
+
+.fab{position:fixed;left:14px;right:14px;bottom:14px;max-width:732px;margin:0 auto;z-index:6;display:flex;justify-content:space-between;padding:15px 20px;border:0;border-radius:14px;background:var(--rosa);color:#fff;font-weight:800;font-size:1.05rem;cursor:pointer;box-shadow:0 6px 0 #a3125f}
+.fab[hidden]{display:none}
+.fab:active{transform:translateY(4px);box-shadow:0 2px 0 #a3125f}
+
+.fundo{position:fixed;inset:0;z-index:10;background:#000b;display:flex;align-items:flex-end;justify-content:center}
+.fundo[hidden]{display:none}
+.folha{width:100%;max-width:560px;max-height:92vh;overflow-y:auto;background:var(--painel);border:2px solid var(--borda);border-radius:20px 20px 0 0;padding:18px 18px 26px}
+.folha h3{font-family:'Pacifico',cursive;font-weight:400;font-size:1.6rem;margin:0 0 8px;color:var(--rosa)}
+.linha{display:flex;justify-content:space-between;gap:10px;padding:5px 0}
+.linha.total{font-weight:800;font-size:1.15rem;border-top:2px solid var(--borda);margin-top:6px;padding-top:10px;color:var(--rosa-claro)}
+.campo{margin-top:12px}
+.campo label{display:block;font-weight:600;margin-bottom:4px}
+.campo input[type=text],.campo input[type=tel],.campo select,.campo textarea{width:100%;padding:10px 12px;border-radius:10px;border:2px solid var(--borda);background:var(--fundo)}
+.opcoes{display:flex;gap:8px}
+.opcoes label{flex:1;display:flex;align-items:center;gap:8px;margin:0;padding:10px 12px;border:2px solid var(--borda);border-radius:10px;cursor:pointer;font-weight:600}
+.opcoes label:has(input:checked){border-color:var(--rosa);background:#2a0f1e}
+.enviar{width:100%;margin-top:18px;padding:14px;border:0;border-radius:12px;background:#25d366;color:#04210f;font-weight:800;font-size:1.05rem;cursor:pointer;box-shadow:0 5px 0 #138a41}
+.enviar:active{transform:translateY(3px);box-shadow:0 2px 0 #138a41}
+.fechar{float:right;border:2px solid var(--borda);background:none;border-radius:10px;padding:4px 12px;cursor:pointer}
+.erro{color:#ff8aa6;margin:10px 0 0;min-height:1.2em;font-weight:600}
+.linha-item{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--borda)}
+.linha-item .nome-item{font-weight:800;grid-column:1}
+.linha-item .qtd{grid-column:1;justify-self:start}
+.linha-item .preco{grid-column:2;grid-row:1}
+.remover{grid-column:2;grid-row:2;justify-self:end;padding:6px 14px;border-radius:10px;border:2px solid #ff8aa6;background:transparent;color:#ff8aa6;font-weight:800;cursor:pointer}
+.remover:hover{background:#ff8aa6;color:#2a0f1e}
+.limpar{width:100%;margin-top:12px;padding:10px;border-radius:12px;border:2px solid var(--borda);background:transparent;color:var(--fraco);font-weight:800;cursor:pointer}
+.limpar:hover{border-color:#ff8aa6;color:#ff8aa6}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Trailer das Meninas</h1>
+  <p>Lanches artesanais, hot dogs e porções</p>
+  <span class="previa">Prévia do cardápio digital</span>
+</header>
+
+<div class="barra">
+  <input id="busca" type="search" placeholder="Buscar lanche, porção ou bebida" aria-label="Buscar no cardápio">
+  <nav id="abas" aria-label="Categorias"></nav>
+</div>
+
+<main id="lista"></main>
+
+<button class="fab" id="verPedido" hidden></button>
+
+<div class="fundo" id="fundo" hidden>
+  <div class="folha" role="dialog" aria-modal="true" aria-label="Seu pedido">
+    <button class="fechar" id="fechar">Fechar</button>
+    <h3>Seu pedido</h3>
+    <div id="resumo"></div>
+
+    <div class="campo">
+      <label>Como você quer receber?</label>
+      <div class="opcoes">
+        <label><input type="radio" name="tipo" value="entrega" checked> Entrega</label>
+        <label><input type="radio" name="tipo" value="retirada"> Retirar no trailer</label>
+      </div>
+    </div>
+    <div class="campo"><label for="nome">Seu nome</label><input id="nome" type="text" autocomplete="name"></div>
+    <div class="campo" id="campoEnd"><label for="end">Endereço de entrega (rua, número, bairro)</label><input id="end" type="text" autocomplete="street-address"></div>
+    <div class="campo">
+      <label for="pag">Forma de pagamento</label>
+      <select id="pag"><option>Pix</option><option>Cartão de débito</option><option>Cartão de crédito</option><option>Dinheiro</option></select>
+    </div>
+    <div class="campo" id="campoTroco" hidden><label for="troco">Troco para quanto?</label><input id="troco" type="text" inputmode="decimal" placeholder="Ex.: 50"></div>
+    <div class="campo"><label for="obs">Observações (tirar algum ingrediente, etc.)</label><textarea id="obs" rows="2"></textarea></div>
+
+    <p class="erro" id="erro" role="alert"></p>
+    <button class="enviar" id="enviar">Enviar pedido pelo WhatsApp</button>
+  </div>
+</div>
+
+<script>
+/* ====== CONFIGURAÇÃO: troque aqui ====== */
+const WHATSAPP = "5519989840483"; // 55 + DDD + número, só dígitos. Ex.: 5519999999999
+const TAXA_ENTREGA = 5;
+/* ======================================= */
+
+const lata = ['Coca-Cola','Coca-Cola Zero','Guaraná','Guaraná Zero','Sprite','Sprite Zero','Fanta Laranja','Fanta Uva','Schweppes'];
+const dois = ['Coca-Cola','Coca-Cola Zero','Fanta Laranja','Fanta Uva','Sprite','Guaraná','Guaraná Zero'];
+const seiscentos = ['Coca-Cola','Fanta Uva','Fanta Laranja','Guaraná','Guaraná Zero','Sprite','Sprite Zero'];
+
+// [nome, descrição, preço]  (preço null = "consulte")
+const MENU = [
+ {nome:'Lanches tradicionais', sub:'Hambúrguer industrial de 120 g', itens:[
+  ['Misto','Pão, presunto, queijo prato, maionese verde',22],
+  ['X Bauru','Hambúrguer, presunto, queijo prato, tomate, maionese verde',23.9],
+  ['X Burguer','Hambúrguer, queijo prato, presunto, milho, batata palha, maionese verde',24],
+  ['X Salada','Hambúrguer, presunto, queijo, milho, batata palha, tomate, cebola roxa, alface americana',25],
+  ['X Egg','Hambúrguer, presunto, queijo, ovo, milho, batata palha, tomate, cebola roxa, alface',26],
+  ['X Bacon','Hambúrguer, presunto, queijo, bacon, milho, batata palha, tomate, alface americana, cebola roxa',31],
+  ['X Catupiry','Hambúrguer, milho, catupiry, presunto, queijo, batata palha, tomate, cebola roxa, alface',31],
+  ['X Cheddar','Hambúrguer, cheddar, batata palha, presunto, queijo, milho, tomate, cebola roxa',31],
+  ['X 4 Queijo','Hambúrguer, 4 queijos, milho, presunto, queijo prato, batata palha, tomate, cebola roxa, alface',31],
+  ['X Frango','Hambúrguer de frango empanado, cheddar, queijo, presunto, milho, batata palha, tomate, cebola roxa, alface',33],
+  ['X Calabresa','Hambúrguer, presunto, queijo, milho, batata palha, calabresa, tomate, cebola roxa, alface',31]
+ ]},
+ {nome:'Lanches gourmet', sub:'Hambúrguer artesanal de 160 g', itens:[
+  ['X-Burguer','Pão, hambúrguer 160 g, maionese verde, presunto e queijo prato',27],
+  ['X-Salada','Hambúrguer 160 g, presunto, queijo, alface americana, tomate, cebola roxa, maionese verde',30],
+  ['X-Bacon','Hambúrguer 160 g, presunto, queijo, bacon, alface americana, tomate, cebola roxa, maionese verde',36],
+  ['X-Egg','Hambúrguer 160 g, presunto, queijo, ovo, alface americana, tomate, cebola roxa, maionese verde',31.9],
+  ['X-Brócolis Crocante','Hambúrguer 160 g, brócolis, queijo, farofa de bacon, catupiry, tomate, cebola roxa, maionese defumada',36],
+  ['X-Catupiry','Hambúrguer 160 g, presunto, queijo, catupiry, alface americana, tomate, cebola roxa, maionese verde',35],
+  ['X-Frango','Hambúrguer de frango empanado, presunto, queijo, alface americana, tomate, cebola roxa, maionese verde (catupiry ou cheddar)',33],
+  ['X-Calabresa','Hambúrguer 160 g, presunto, queijo, calabresa em rodelas, alface americana, tomate, cebola roxa, maionese verde',34.9],
+  ['X-Paulista','Pão, presunto 160 g, queijo prato, maionese verde, tomate',27],
+  ['X-Tudo da Meninas','2 hambúrgueres de 120 g, ovo, presunto, queijo, bacon, calabresa, batata palha, catupiry, maionese verde, alface, tomate, cebola roxa',47],
+  ['X-Tudo Especial','Hambúrguer 120 g, ovo, presunto, queijo, 2 salsichas, batata palha, catupiry, maionese verde, alface, tomate, cebola roxa',45],
+  ['X Bacon Flambado','Hambúrguer 160 g, abacaxi flambado na cachaça, queijo prato, maionese defumada',38],
+  ['X Rúcula Caramelizado','Hambúrguer 160 g, cebola caramelizada, rúcula, tomate, queijo mussarela, maionese defumada',33],
+  ['X Coalho & Mel','Baguete, hambúrguer 160 g, mussarela, queijo coalho passado no mel, maionese defumada',null],
+  ['X Geleia de Pimenta com Bacon','Pão, hambúrguer 160 g, geleia de pimenta, farofa de bacon, mussarela',null],
+  ['X Caipira','Baguete, linguiça caipira 160 g, mussarela, vinagrete',null]
+ ]},
+ {nome:'Hot dogs', sub:'', itens:[
+  ['Hot Dog Tradicional','Pão, 2 salsichas, molho, purê, vinagrete, milho, batata palha, maionese da casa',23],
+  ['Hot Dog Bacon','Pão, 2 salsichas, purê, vinagrete, bacon, milho, batata palha, molho, maionese da casa',28],
+  ['Hot Dog Completo','Pão, 2 salsichas, molho, purê, vinagrete, milho, bacon, batata palha e maionese (catupiry ou cheddar)',30]
+ ]},
+ {nome:'Combo kids', sub:'Acompanha batata pequena e Coca-Cola pequena (caçulinha) ou água', itens:[
+  ['Kids Burguer','Pão, hambúrguer tradicional, queijo prato',27],
+  ['Kids X Burguer','Pão, hambúrguer tradicional, presunto, queijo prato',null],
+  ['Kids Dog','Pão, 2 salsichas, molho de tomate, batata palha',28]
+ ]},
+ {nome:'Porções individuais', sub:'200 g', itens:[
+  ['Batata frita individual','Batata frita crocante e dourada',16],
+  ['Batata com bacon e cheddar','Batata frita, bacon e cheddar',20],
+  ['Batata com mussarela e bacon','Batata frita, mussarela e bacon',20]
+ ]},
+ {nome:'Porções', sub:'500 g', itens:[
+  ['Batata com maionese verde','Batata frita e maionese verde',30],
+  ['Batata com bacon e cheddar','Batata frita, bacon e cheddar',38],
+  ['Batata com mussarela e bacon','Batata frita, mussarela e bacon',38],
+  ['Batata com bacon e catupiry','Batata frita, bacon e catupiry',38],
+  ['Batata com calabresa e mussarela','Batata frita, calabresa e mussarela',40],
+  ['Batata com calabresa e catupiry','Batata frita, calabresa e catupiry',40],
+  ['Batata com carne seca e catupiry','Batata frita, carne seca e catupiry',40],
+  ['Anéis de cebola','Cebola empanada e crocante',20],
+  ['Batata mista com calabresa','500 g de batata + 200 g de calabresa frita',43]
+ ]},
+ {nome:'Bebidas', sub:'', itens:[
+  ['Água sem gás','',3],
+  ['Água com gás','',4],
+  ...lata.map(n=>[n+' (lata)','Lata',7]),
+  ...dois.map(n=>[n+' 2 L','2 litros',16]),
+  ...seiscentos.map(n=>[n+' 600 ml','600 ml',null]),
+  ['Suco Del Valle Maracujá (lata)','',null],
+  ['Suco Del Valle Uva (lata)','',null],
+  ['Heineken (lata)','Cerveja',null],
+  ['América (lata)','Cerveja',null],
+  ['Brahma (lata)','Cerveja',null]
+ ]}
+];
+
+const $ = (s)=>document.querySelector(s);
+const brl = (v)=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const carrinho = {}; // id -> quantidade
+const slug = (s)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-');
+
+function acharItem(id){ const [c,i]=id.split('-').map(Number); const [nome,,preco]=MENU[c].itens[i]; return {nome,preco}; }
+function totais(){
+  let n=0, sub=0;
+  for(const id in carrinho){ n+=carrinho[id]; sub+=carrinho[id]*acharItem(id).preco; }
+  return {n,sub};
+}
+
+function desenhar(){
+  const q = slug($('#busca').value).replace(/-/g,'');
+  let html='', abas='';
+  MENU.forEach((cat,c)=>{
+    const linhas = cat.itens.map((it,i)=>[it,i]).filter(([it])=>!q || slug(it[0]+it[1]).replace(/-/g,'').includes(q));
+    if(!linhas.length) return;
+    abas += `<button data-alvo="cat-${c}">${cat.nome}</button>`;
+    html += `<section id="cat-${c}"><h2>${cat.nome}</h2>${cat.sub?`<p class="sub">${cat.sub}</p>`:''}`;
+    linhas.forEach(([it,i])=>{
+      const id=c+'-'+i, [nome,desc,preco]=it, qt=carrinho[id]||0;
+      html += `<div class="item"><div><b>${nome}</b>${desc?`<small>${desc}</small>`:''}</div>`;
+      html += preco===null ? `<span class="preco consulte">Consulte</span>` : `<span class="preco">${brl(preco)}</span>`;
+      if(preco!==null){
+        html += `<div class="acao">` + (qt
+          ? `<div class="qtd"><button data-menos="${id}" aria-label="Tirar um ${nome}">−</button><b>${qt}</b><button data-mais="${id}" aria-label="Adicionar mais um ${nome}">+</button></div>`
+          : `<button class="add" data-mais="${id}">Adicionar</button>`) + `</div>`;
+      }
+      html += `</div>`;
+    });
+    html += `</section>`;
+  });
+  $('#lista').innerHTML = html || `<p class="vazio">Nada encontrado. Tente outra palavra.</p>`;
+  $('#abas').innerHTML = abas;
+  atualizarBarra();
+}
+
+function atualizarBarra(){
+  const {n,sub}=totais(), b=$('#verPedido');
+  b.hidden = n===0;
+  b.innerHTML = `<span>Ver pedido (${n} ${n===1?'item':'itens'})</span><span>${brl(sub)}</span>`;
+}
+
+function resumo(){
+  const entrega = document.querySelector('input[name=tipo]:checked').value==='entrega';
+  const {sub}=totais(), taxa = entrega?TAXA_ENTREGA:0;
+  let h='';
+  for(const id in carrinho){
+    const {nome,preco}=acharItem(id), q=carrinho[id];
+    h += `<div class="linha-item">
+      <div class="nome-item">${nome}</div>
+      <div class="qtd">
+        <button data-menos="${id}" aria-label="Tirar um ${nome}">−</button>
+        <b>${q}</b>
+        <button data-mais="${id}" aria-label="Adicionar mais um ${nome}">+</button>
+      </div>
+      <span class="preco">${brl(q*preco)}</span>
+      <button class="remover" data-remover="${id}" aria-label="Remover ${nome} do pedido">Remover</button>
+    </div>`;
+  }
+  h += `<div class="linha"><span>Subtotal</span><span>${brl(sub)}</span></div>`;
+  h += `<div class="linha"><span>Entrega</span><span>${entrega?brl(taxa):'Grátis (retirada)'}</span></div>`;
+  h += `<div class="linha total"><span>Total</span><span>${brl(sub+taxa)}</span></div>`;
+  h += `<button class="limpar" data-limpar="1">Limpar pedido</button>`;
+  $('#resumo').innerHTML = h;
+  $('#campoEnd').hidden = !entrega;
+}
+
+function refazer(){
+  const y=scrollY; desenhar(); scrollTo(0,y);
+  if(!$('#fundo').hidden){ if(!totais().n) $('#fundo').hidden=true; else resumo(); }
+}
+
+function mudar(id,delta){
+  carrinho[id]=(carrinho[id]||0)+delta;
+  if(carrinho[id]<=0) delete carrinho[id];
+  const y=scrollY; desenhar(); scrollTo(0,y);
+  if(!$('#fundo').hidden){ if(!totais().n) $('#fundo').hidden=true; else resumo(); }
+}
+
+document.addEventListener('click',(e)=>{
+  const t=e.target.closest('button'); if(!t) return;
+  if(t.dataset.mais) mudar(t.dataset.mais,1);
+  else if(t.dataset.menos) mudar(t.dataset.menos,-1);
+  else if(t.dataset.remover){ delete carrinho[t.dataset.remover]; refazer(); }
+  else if(t.dataset.limpar){ for(const k in carrinho) delete carrinho[k]; refazer(); }
+  else if(t.dataset.alvo) document.getElementById(t.dataset.alvo).scrollIntoView();
+});
+$('#busca').addEventListener('input',desenhar);
+$('#verPedido').addEventListener('click',()=>{ resumo(); $('#fundo').hidden=false; });
+$('#fechar').addEventListener('click',()=>$('#fundo').hidden=true);
+$('#fundo').addEventListener('click',(e)=>{ if(e.target.id==='fundo') $('#fundo').hidden=true; });
+document.querySelectorAll('input[name=tipo]').forEach(r=>r.addEventListener('change',resumo));
+$('#pag').addEventListener('change',()=>{ $('#campoTroco').hidden = $('#pag').value!=='Dinheiro'; });
+
+$('#enviar').addEventListener('click',()=>{
+  const erro=$('#erro'); erro.textContent='';
+  const entrega = document.querySelector('input[name=tipo]:checked').value==='entrega';
+  const nome=$('#nome').value.trim(), end=$('#end').value.trim();
+  if(!totais().n){ erro.textContent='Adicione pelo menos um item.'; return; }
+  if(!nome){ erro.textContent='Digite o seu nome.'; return; }
+  if(entrega && !end){ erro.textContent='Digite o endereço de entrega.'; return; }
+  if(!/^\d{12,13}$/.test(WHATSAPP)){ erro.textContent='Número do WhatsApp ainda não configurado no código.'; return; }
+
+  const {sub}=totais(), taxa=entrega?TAXA_ENTREGA:0;
+  let m = `*Pedido: Trailer das Meninas*\n\nCliente: ${nome}\n\n*Itens*\n`;
+  for(const id in carrinho){ const {nome:n,preco}=acharItem(id); m += `${carrinho[id]}x ${n}: ${brl(carrinho[id]*preco)}\n`; }
+  m += `\nSubtotal: ${brl(sub)}\nEntrega: ${entrega?brl(taxa):'Retirada no trailer'}\n*Total: ${brl(sub+taxa)}*\n`;
+  m += entrega ? `\nEndereço: ${end}\n` : `\nRetirada no trailer\n`;
+  m += `Pagamento: ${$('#pag').value}`;
+  if($('#pag').value==='Dinheiro' && $('#troco').value.trim()) m += ` (troco para ${$('#troco').value.trim()})`;
+  if($('#obs').value.trim()) m += `\nObs.: ${$('#obs').value.trim()}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(m)}`,'_blank');
+});
+
+desenhar();
+</script>
+</body>
+</html>
